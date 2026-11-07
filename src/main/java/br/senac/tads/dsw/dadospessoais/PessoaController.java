@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +53,7 @@ public class PessoaController {
 		return optPessoa.get();
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/sem-validacao")
 	public ResponseEntity<?> incluirNovoSemValidacao(@RequestBody PessoaDto pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
@@ -63,6 +65,7 @@ public class PessoaController {
 		return ResponseEntity.created(location).build();
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<?> incluirNovoComValidacao(@RequestBody @Valid PessoaDto pessoa) {
 		pessoaService.incluirNovaPessoa(pessoa);
@@ -74,6 +77,7 @@ public class PessoaController {
 		return ResponseEntity.created(location).build();
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{username}")
 	public ResponseEntity<?> atualizar(@PathVariable("username") String username,
 									   @RequestBody @Valid PessoaAlteracaoDto pessoa) {
@@ -81,6 +85,7 @@ public class PessoaController {
 		return ResponseEntity.ok().body(pessoaAlterada);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{username}")
 	public ResponseEntity<?> remover(@PathVariable("username") String username) {
 		pessoaService.removerPessoa(username);
